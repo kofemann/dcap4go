@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"path"
 
@@ -44,9 +45,9 @@ func main() {
 	}
 	defer out.Close()
 
-	copydata(in, out)
+	copydata(in.Reader, out.Writer)
 }
 
-func copydata(in interface{}, out interface{}) int {
+func copydata(in io.Reader, out io.Writer) int {
 	return 5
 }

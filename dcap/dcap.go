@@ -6,9 +6,6 @@ import (
 	"net/url"
 )
 
-type Dcap struct {
-}
-
 func Open(fname string) (Dcap, error) {
 
 	var d Dcap
