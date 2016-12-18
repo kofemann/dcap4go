@@ -31,14 +31,14 @@ func main() {
 
 	fmt.Println(src)
 	fmt.Println(dest)
-	in, err := dcap.Open(src)
+	in, err := dcap.Open(src, os.O_RDONLY, 0)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Can't open source: %v\n", err)
 		os.Exit(2)
 	}
 	defer in.Close()
 
-	out, err := dcap.Open(dest)
+	out, err := dcap.Open(dest, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0600)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Can't open destination: %v\n", err)
 		os.Exit(3)
@@ -48,6 +48,6 @@ func main() {
 	copydata(in.Reader, out.Writer)
 }
 
-func copydata(in io.Reader, out io.Writer) int {
-	return 5
+func copydata(src io.Reader, dst io.Writer) (int64, error) {
+	return io.Copy(dst, src)
 }
