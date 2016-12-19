@@ -1,6 +1,7 @@
 package dcap
 
 import (
+	"io"
 	"net/url"
 	"os"
 	"syscall"
@@ -11,9 +12,9 @@ const (
 	DCAP_DEFAULT_PORT = "22125"
 )
 
-func Open(fname string, flag int, perm os.FileMode) (*Dcap, error) {
+func Open(fname string, flag int, perm os.FileMode) (*DcapStream, error) {
 
-	var d Dcap
+	var d DcapStream
 
 	u, err := url.Parse(fname)
 	if err != nil {
@@ -40,6 +41,16 @@ func (d *Dcap) Read(p []byte) (int, error) {
 
 // implement interface io.Writer
 func (d *Dcap) Write(p []byte) (int, error) {
+	return 0, nil
+}
+
+// implement interface io.ReadFrom
+func (d *Dcap) ReadFrom(r io.Reader) (n int64, err error) {
+	return 0, nil
+}
+
+// implement interface io.WriteTo
+func (d *Dcap) WriteTo(w io.Writer) (n int64, err error) {
 	return 0, nil
 }
 

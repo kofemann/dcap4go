@@ -11,18 +11,19 @@ import (
 	"strings"
 )
 
-func NewRemoteDcap(u *url.URL, flag int, perm os.FileMode) (*Dcap, error) {
+func NewRemoteDcap(u *url.URL, flag int, perm os.FileMode) (*DcapStream, error) {
 
-	var d Dcap
+	var d DcapStream
 
 	conn, err := net.Dial("tcp", u.Host)
 	if err != nil {
 		return &d, err
 	}
 
-	d.conn = conn
-	d.controlChannel = bufio.NewReadWriter(bufio.NewReader(d.conn), bufio.NewWriter(d.conn))
-	err = d.asciiHandshake()
+	client := Dcap{}
+	client.conn = conn
+	client.controlChannel = bufio.NewReadWriter(bufio.NewReader(conn), bufio.NewWriter(conn))
+	err = client.asciiHandshake()
 	if err != nil {
 		return &d, err
 	}
@@ -32,11 +33,11 @@ func NewRemoteDcap(u *url.URL, flag int, perm os.FileMode) (*Dcap, error) {
 		mode = "w"
 	}
 
-	err = d.open(u.String(), mode)
+	err = client.open(u.String(), mode)
 	if err != nil {
 		return &d, err
 	}
-	return &d, nil
+	return NewDcapStream(&client)
 }
 
 func parseReply(msg string) ([]string, error) {

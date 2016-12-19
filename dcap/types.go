@@ -6,11 +6,17 @@ import (
 	"net"
 )
 
-type Dcap struct {
-	Reader io.Reader
-	Writer io.Writer
-	Closer io.Closer
+type DcapStream struct {
+	Reader     io.Reader
+	Writer     io.Writer
+	Closer     io.Closer
+	ReaderFrom io.ReaderFrom
+	WriterTo   io.WriterTo
 
+	dcap *Dcap
+}
+
+type Dcap struct {
 	conn           net.Conn
 	controlChannel *bufio.ReadWriter
 	dataChannel    net.Conn

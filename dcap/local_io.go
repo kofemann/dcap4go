@@ -4,14 +4,14 @@ import (
 	"os"
 )
 
-func NewLocalDcap(name string, flag int, perm os.FileMode) (*Dcap, error) {
+func NewLocalDcap(name string, flag int, perm os.FileMode) (*DcapStream, error) {
 
-	var d Dcap
+	var d DcapStream
 	f, err := os.OpenFile(name, flag, perm)
 	if err != nil {
 		return &d, err
 	}
 
-	d = Dcap{Reader: f, Writer: f, Closer: f}
+	d = DcapStream{Reader: f, Writer: f, Closer: f}
 	return &d, nil
 }
