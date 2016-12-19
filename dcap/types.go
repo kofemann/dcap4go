@@ -13,5 +13,6 @@ type Dcap struct {
 
 	conn           net.Conn
 	controlChannel *bufio.ReadWriter
-	session        uint
+	dataChannel    net.Conn
+	session        uint32
 }
